@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,4 +39,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public void showAddItemPopUp(View view) {
+        Toast.makeText(this, "Showing...", Toast.LENGTH_SHORT).show();
+    }
 }
