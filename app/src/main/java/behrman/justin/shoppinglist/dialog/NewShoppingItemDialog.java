@@ -2,6 +2,8 @@ package behrman.justin.shoppinglist.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.util.Consumer;
 
 import behrman.justin.shoppinglist.R;
@@ -19,20 +22,34 @@ import behrman.justin.shoppinglist.model.ShoppingItem;
 public class NewShoppingItemDialog {
 
     private Consumer<ShoppingItem> onFinish;
-    private Dialog dialog;
+    private AlertDialog dialog;
+    private View popupView;
     private EditText nameText, costText, descriptionText;
     private CheckBox purchasedBox;
     private Spinner categorySpinner;
 
     private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", 0, Category.values()[0], false);
-    ;
 
     public NewShoppingItemDialog(Context context) {
-        dialog = new Dialog(context);
-        dialog.setContentView(R.layout.popup_layout);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle(R.string.app_name);
+        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                onSave(dialogInterface);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        popupView = LayoutInflater.from(context).inflate(R.layout.popup_layout, null);
+        builder.setView(popupView);
+        dialog = builder.create();
         extractViews();
         initSpinner();
-        initBtnListener();
     }
 
     private void initSpinner() {
@@ -51,7 +68,7 @@ public class NewShoppingItemDialog {
         return false;
     }
 
-    private void onSave() {
+    private void onSave(DialogInterface dialogInterface) {
         String itemName = nameText.getText().toString().trim();
         String estimatedCostString = costText.getText().toString().trim();
         String description = descriptionText.getText().toString().trim();
@@ -60,32 +77,15 @@ public class NewShoppingItemDialog {
         boolean purchased = purchasedBox.isChecked();
         ShoppingItem item = new ShoppingItem(itemName, description, estimatedCost, (Category) categorySpinner.getSelectedItem(), purchased);
         this.onFinish.accept(item);
-        dialog.dismiss();
-    }
-
-    private void initBtnListener() {
-        Button saveBtn = dialog.findViewById(R.id.saveBtn);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSave();
-            }
-        });
-        Button exitBtn = dialog.findViewById(R.id.exitBtn);
-        exitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        dialogInterface.dismiss();
     }
 
     private void extractViews() {
-        nameText = dialog.findViewById(R.id.nameText);
-        costText = dialog.findViewById(R.id.costText);
-        descriptionText = dialog.findViewById(R.id.descriptionText);
-        purchasedBox = dialog.findViewById(R.id.alreadyPurchasedBox);
-        categorySpinner = dialog.findViewById(R.id.categorySpinner);
+        nameText = popupView.findViewById(R.id.nameText);
+        costText = popupView.findViewById(R.id.costText);
+        descriptionText = popupView.findViewById(R.id.descriptionText);
+        purchasedBox = popupView.findViewById(R.id.alreadyPurchasedBox);
+        categorySpinner = popupView.findViewById(R.id.categorySpinner);
     }
 
     public void show(ShoppingItem initialSettings, Consumer<ShoppingItem> onSave) {
