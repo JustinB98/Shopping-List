@@ -53,6 +53,7 @@ public class NewShoppingItemDialog {
             @Override
             public void onClick(View view) {
                 onSave();
+                dialog.dismiss();
             }
         });
         Button exitBtn = dialog.findViewById(R.id.exitBtn);
@@ -78,6 +79,7 @@ public class NewShoppingItemDialog {
         descriptionText.setText("");
         purchasedBox.setChecked(false);
         categorySpinner.setSelection(0);
+        nameText.requestFocus();
         dialog.show();
     }
 
