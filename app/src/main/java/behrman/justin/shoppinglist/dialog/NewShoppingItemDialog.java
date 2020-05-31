@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.core.util.Consumer;
 
@@ -38,13 +39,26 @@ public class NewShoppingItemDialog {
         categorySpinner.setAdapter(spinnerAdapter);
     }
 
+    private boolean invalidFields(String ...strings) {
+        for (String s : strings) {
+            if (s.isEmpty()) {
+                Toast.makeText(dialog.getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void onSave() {
-        String itemName = nameText.getText().toString();
-        double estimatedCost = Double.parseDouble(costText.getText().toString());
-        String description = descriptionText.getText().toString();
+        String itemName = nameText.getText().toString().trim();
+        String estimatedCostString = costText.getText().toString().trim();
+        String description = descriptionText.getText().toString().trim();
+        if (invalidFields(itemName, estimatedCostString, description)) return;
+        double estimatedCost = Double.parseDouble(estimatedCostString);
         boolean purchased = purchasedBox.isChecked();
         ShoppingItem item = new ShoppingItem(itemName, description, estimatedCost, (Category) categorySpinner.getSelectedItem(), purchased);
         this.onFinish.accept(item);
+        dialog.dismiss();
     }
 
     private void initBtnListener() {
@@ -53,7 +67,6 @@ public class NewShoppingItemDialog {
             @Override
             public void onClick(View view) {
                 onSave();
-                dialog.dismiss();
             }
         });
         Button exitBtn = dialog.findViewById(R.id.exitBtn);
