@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,8 @@ import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
 public class MainActivity extends AppCompatActivity {
 
     private NewShoppingItemDialog dialog;
+    private List<ShoppingItem> items;
+    private ShoppingListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +35,17 @@ public class MainActivity extends AppCompatActivity {
                 addItem(shoppingItem);
             }
         });
-        List<ShoppingItem> items = Arrays.asList(
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true),
-                new ShoppingItem("Bad item", "Bad description", 6.13, Category.ELECTRONIC, false)
-        );
+        items = new ArrayList<ShoppingItem>();
+        items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
-        recyclerView.setAdapter(new ShoppingListAdapter(items));
+        adapter = new ShoppingListAdapter(items);
+        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void addItem(ShoppingItem item) {
-        Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
+        items.add(item);
+        adapter.notifyDataSetChanged();
     }
 
     public void showAddItemPopUp(View view) {
