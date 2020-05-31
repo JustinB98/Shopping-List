@@ -59,6 +59,14 @@ public class ShoppingItem {
         this.purchased = purchased;
     }
 
+    public void copy(ShoppingItem item) {
+        this.name = item.name;
+        this.category = item.category;
+        this.purchased = item.purchased;
+        this.description = item.description;
+        this.estimatedPrice = item.estimatedPrice;
+    }
+
     @Override
     public String toString() {
         return "ShoppingItem{" +
