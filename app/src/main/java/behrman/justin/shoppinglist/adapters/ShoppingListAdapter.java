@@ -11,21 +11,24 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
+import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder> {
 
     private static final String TAG = ShoppingListAdapter.class.getSimpleName();
-
     private List<ShoppingItem> items;
+    private NewShoppingItemDialog dialog;
 
-    public ShoppingListAdapter(List<ShoppingItem> items) {
+    public ShoppingListAdapter(List<ShoppingItem> items, NewShoppingItemDialog dialog) {
         this.items = items;
+        this.dialog = dialog;
     }
 
     @NonNull
@@ -77,7 +80,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i(TAG, "Clicked edit button");
+                    dialog.show(item, new Consumer<ShoppingItem>() {
+                        @Override
+                        public void accept(ShoppingItem shoppingItem) {
+                            item.copy(shoppingItem);
+                            ShoppingListAdapter.super.notifyDataSetChanged();
+                        }
+                    });
                 }
             });
             purchaseBox.setOnClickListener(new View.OnClickListener() {

@@ -29,16 +29,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dialog = new NewShoppingItemDialog(this, new Consumer<ShoppingItem>() {
-            @Override
-            public void accept(ShoppingItem shoppingItem) {
-                addItem(shoppingItem);
-            }
-        });
+        dialog = new NewShoppingItemDialog(this);
         items = new ArrayList<ShoppingItem>();
         items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
-        adapter = new ShoppingListAdapter(items);
+        adapter = new ShoppingListAdapter(items, dialog);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -49,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddItemPopUp(View view) {
-        dialog.show();
+        dialog.show(new Consumer<ShoppingItem>() {
+            @Override
+            public void accept(ShoppingItem shoppingItem) {
+                addItem(shoppingItem);
+            }
+        });
     }
 }

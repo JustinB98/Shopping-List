@@ -24,8 +24,10 @@ public class NewShoppingItemDialog {
     private CheckBox purchasedBox;
     private Spinner categorySpinner;
 
-    public NewShoppingItemDialog(Context context, Consumer<ShoppingItem> onFinish) {
-        this.onFinish = onFinish;
+    private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", 0, Category.values()[0], false);
+    ;
+
+    public NewShoppingItemDialog(Context context) {
         dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_layout);
         extractViews();
@@ -39,7 +41,7 @@ public class NewShoppingItemDialog {
         categorySpinner.setAdapter(spinnerAdapter);
     }
 
-    private boolean invalidFields(String ...strings) {
+    private boolean invalidFields(String... strings) {
         for (String s : strings) {
             if (s.isEmpty()) {
                 Toast.makeText(dialog.getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
@@ -86,14 +88,21 @@ public class NewShoppingItemDialog {
         categorySpinner = dialog.findViewById(R.id.categorySpinner);
     }
 
-    public void show() {
-        nameText.setText("");
-        costText.setText("");
-        descriptionText.setText("");
-        purchasedBox.setChecked(false);
-        categorySpinner.setSelection(0);
+    public void show(ShoppingItem initialSettings, Consumer<ShoppingItem> onSave) {
+        /* Although not thread safe, and provides a global state, it does make it easier */
+        /* than setting the button's onClick every time */
+        this.onFinish = onSave;
+        nameText.setText(initialSettings.getName());
+        costText.setText(initialSettings.getEstimatedPrice() + "");
+        descriptionText.setText(initialSettings.getDescription());
+        purchasedBox.setChecked(initialSettings.isPurchased());
+        categorySpinner.setSelection(initialSettings.getCategory().ordinal());
         nameText.requestFocus();
         dialog.show();
+    }
+
+    public void show(Consumer<ShoppingItem> onSave) {
+        this.show(DEFAULT_SHOPPING_ITEM, onSave);
     }
 
 }
