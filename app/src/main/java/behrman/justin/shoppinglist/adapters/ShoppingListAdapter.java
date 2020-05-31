@@ -54,9 +54,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         private CheckBox purchaseBox;
         private Button editBtn;
         private ToggleButton detailsBtn;
+        private View itemView;
 
         public ShoppingListViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             this.categoryImage = itemView.findViewById(R.id.categoryImage);
             this.descriptionView = itemView.findViewById(R.id.descriptionView);
             this.itemNameView =  itemView.findViewById(R.id.itemNameView);
@@ -66,16 +68,29 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             this.detailsBtn = itemView.findViewById(R.id.detailsBtn);
         }
 
-        private void setWith(final int position) {
-            ShoppingItem item = items.get(position);
+        private void setWith(int position) {
+            final ShoppingItem item = items.get(position);
             descriptionView.setText(item.getDescription());
             itemNameView.setText(item.getName());
-            priceView.setText(item.getEstimatedPrice() + "");
+            priceView.setText("$" + item.getEstimatedPrice());
             purchaseBox.setChecked(item.isPurchased());
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.i(TAG, "Logging with position " + position);
+                    Log.i(TAG, "Clicked edit button");
+                }
+            });
+            purchaseBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    item.setPurchased(purchaseBox.isChecked());
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    purchaseBox.setChecked(!purchaseBox.isChecked());
+                    item.setPurchased(purchaseBox.isChecked());
                 }
             });
         }
