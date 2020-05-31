@@ -25,10 +25,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private static final String TAG = ShoppingListAdapter.class.getSimpleName();
     private List<ShoppingItem> items;
     private NewShoppingItemDialog dialog;
+    private Consumer<ShoppingItem> dataSetChanged;
 
-    public ShoppingListAdapter(List<ShoppingItem> items, NewShoppingItemDialog dialog) {
+    public ShoppingListAdapter(List<ShoppingItem> items, NewShoppingItemDialog dialog, Consumer<ShoppingItem> dataSetChanged) {
         this.items = items;
         this.dialog = dialog;
+        this.dataSetChanged = dataSetChanged;
     }
 
     @NonNull
@@ -85,6 +87,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                         public void accept(ShoppingItem shoppingItem) {
                             item.copy(shoppingItem);
                             ShoppingListAdapter.super.notifyDataSetChanged();
+                            ShoppingListAdapter.this.dataSetChanged.accept(item);
                         }
                     });
                 }
@@ -93,6 +96,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View view) {
                     item.setPurchased(purchaseBox.isChecked());
+                    ShoppingListAdapter.this.dataSetChanged.accept(item);
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +104,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 public void onClick(View view) {
                     purchaseBox.setChecked(!purchaseBox.isChecked());
                     item.setPurchased(purchaseBox.isChecked());
+                    ShoppingListAdapter.this.dataSetChanged.accept(item);
                 }
             });
         }
