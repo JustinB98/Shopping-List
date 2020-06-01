@@ -1,5 +1,6 @@
 package behrman.justin.shoppinglist.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             itemNameView.setText(item.getName());
             priceView.setText("$" + item.getEstimatedPrice());
             purchaseBox.setChecked(item.isPurchased());
+            categoryImage.setBackgroundResource(item.getCategory().getImageResId());
             editBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
