@@ -8,12 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
 import behrman.justin.shoppinglist.adapters.ShoppingListAdapter;
+import behrman.justin.shoppinglist.dialog.DialogUtils;
 import behrman.justin.shoppinglist.model.ItemManager;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
@@ -23,6 +27,30 @@ public class MainActivity extends AppCompatActivity {
     private NewShoppingItemDialog dialog;
     private List<ShoppingItem> items;
     private ShoppingListAdapter adapter;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    public void menuAction(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.removeAllItemsItem:
+                DialogUtils.showConfirmDialog(this, "Are you sure you want to delete all items?", new Runnable() {
+                    @Override
+                    public void run() {
+                        removeAllItems();
+                    }
+                });
+        }
+    }
+
+    private void removeAllItems() {
+        items.clear();
+        ItemManager.saveItems(this, items);
+        adapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
