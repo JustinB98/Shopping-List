@@ -93,7 +93,7 @@ public class ShoppingItem {
     public static ShoppingItem fromJSONObject(JSONObject jsonObject) {
         try {
             String name = jsonObject.getString("name");
-            Category category = Category.valueOf(jsonObject.getString("category"));
+            Category category = Category.valueOf(jsonObject.getString("category").toUpperCase());
             boolean purchased = jsonObject.getBoolean("purchased");
             String description = jsonObject.getString("description");
             double estimatedPrice = jsonObject.getDouble("estimatedPrice");
