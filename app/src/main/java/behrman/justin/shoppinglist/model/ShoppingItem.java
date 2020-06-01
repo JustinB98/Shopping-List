@@ -14,13 +14,13 @@ public class ShoppingItem {
     private static final String TAG = ShoppingItem.class.getSimpleName();
 
     private String name, description;
-    private double estimatedPrice;
+    private int estimatedPrice;
     private Category category;
     private boolean purchased;
 
     public ShoppingItem() {}
 
-    public ShoppingItem(String name, String description, double estimatedPrice, Category category, boolean purchased) {
+    public ShoppingItem(String name, String description, int estimatedPrice, Category category, boolean purchased) {
         this.name = name;
         this.description = description;
         this.estimatedPrice = estimatedPrice;
@@ -52,11 +52,11 @@ public class ShoppingItem {
         this.description = description;
     }
 
-    public double getEstimatedPrice() {
+    public int getEstimatedPrice() {
         return estimatedPrice;
     }
 
-    public void setEstimatedPrice(double estimatedPrice) {
+    public void setEstimatedPrice(int estimatedPrice) {
         this.estimatedPrice = estimatedPrice;
     }
 
@@ -96,7 +96,7 @@ public class ShoppingItem {
             Category category = Category.valueOf(jsonObject.getString("category").toUpperCase());
             boolean purchased = jsonObject.getBoolean("purchased");
             String description = jsonObject.getString("description");
-            double estimatedPrice = jsonObject.getDouble("estimatedPrice");
+            int estimatedPrice = jsonObject.getInt("estimatedPrice");
             return new ShoppingItem(name, description, estimatedPrice, category, purchased);
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage(), e);
