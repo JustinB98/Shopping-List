@@ -18,11 +18,8 @@
             android:id="@+id/categoryImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -35,21 +32,35 @@
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:textSize="25sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/categoryImage" />
+            app:layout_constraintTop_toBottomOf="@id/bottomBarrier" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/bottomBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="detailsBtn,categoryImage,purchasedBox" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/topBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="categoryImage,editBtn" />
 
         <TextView
             android:id="@+id/itemNameView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHorizontal_weight="1"
-            android:gravity="start"
             android:text="Lunch"
-            android:textAlignment="viewStart"
+            android:textAlignment="center"
             android:textColor="@android:color/tertiary_text_light"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/topBarrier"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,16 +70,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$5"
+            android:textColor="@android:color/holo_green_light"
             android:textSize="24sp"
-            app:layout_constraintLeft_toLeftOf="@id/itemNameView"
-            app:layout_constraintTop_toBottomOf="@id/itemNameView" />
+            app:layout_constraintBottom_toTopOf="@id/purchasedBox"
+            app:layout_constraintLeft_toRightOf="@id/categoryImage"
+            app:layout_constraintRight_toLeftOf="@id/editBtn"
+            app:layout_constraintTop_toTopOf="@id/topBarrier" />
 
         <CheckBox
             android:id="@+id/purchasedBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Purchased"
+            app:layout_constraintBottom_toTopOf="@id/bottomBarrier"
             app:layout_constraintLeft_toLeftOf="@id/priceView"
+            app:layout_constraintRight_toRightOf="@id/priceView"
             app:layout_constraintTop_toBottomOf="@id/priceView" />
 
         <Button
@@ -77,8 +93,7 @@
             android:layout_height="wrap_content"
             android:text="Edit"
             android:textSize="16sp"
-            app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintLeft_toRightOf="@id/itemNameView"
+            app:layout_constraintBottom_toTopOf="@id/detailsBtn"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -89,6 +104,7 @@
             android:textOff="Show\nDetails"
             android:textOn="Hide\nDetails"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/editBtn"
             app:layout_constraintRight_toRightOf="@id/editBtn"
             app:layout_constraintTop_toBottomOf="@id/editBtn" />
