@@ -1,28 +1,19 @@
 package behrman.justin.shoppinglist.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Consumer;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONStringer;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
 import behrman.justin.shoppinglist.adapters.ShoppingListAdapter;
-import behrman.justin.shoppinglist.model.Category;
 import behrman.justin.shoppinglist.model.ItemManager;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
@@ -39,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dialog = new NewShoppingItemDialog(this);
         items = ItemManager.getShoppingItems(this);
+
         //items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
         adapter = new ShoppingListAdapter(items, dialog, new Consumer<ShoppingItem>() {
@@ -49,6 +41,26 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        initDeleteOnSwipe(recyclerView);
+    }
+
+    private void initDeleteOnSwipe(RecyclerView recyclerView) {
+        ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                items.remove(position);
+                ItemManager.saveItems(MainActivity.this, items);
+                adapter.notifyDataSetChanged();
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void addItem(ShoppingItem item) {
