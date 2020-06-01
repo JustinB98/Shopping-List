@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"
-        android:maxLength="10" />
+        android:maxLength="50" />
 
     <EditText
         android:id="@+id/costText"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Description"
-        android:maxLength="40" />
+        android:maxLength="70" />
 
     <CheckBox
         android:id="@+id/alreadyPurchasedBox"
