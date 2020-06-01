@@ -72,7 +72,7 @@ public class NewShoppingItemDialog {
         String itemName = nameText.getText().toString().trim();
         String estimatedCostString = costText.getText().toString().trim();
         String description = descriptionText.getText().toString().trim();
-        if (invalidFields(itemName, estimatedCostString, description)) return;
+        if (invalidFields(itemName, estimatedCostString)) return;
         int estimatedCost = Integer.parseInt(estimatedCostString);
         boolean purchased = purchasedBox.isChecked();
         ShoppingItem item = new ShoppingItem(itemName, description, estimatedCost, (Category) categorySpinner.getSelectedItem(), purchased);
