@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="detailsBtn,categoryImage,purchasedBox" />
+            app:constraint_referenced_ids="detailsBtn,categoryImage" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/topBarrier"
