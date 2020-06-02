@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
@@ -21,11 +23,12 @@ import behrman.justin.shoppinglist.dialog.DialogUtils;
 import behrman.justin.shoppinglist.model.ItemManager;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
+import behrman.justin.shoppinglist.model.SortingSettings;
 
 public class MainActivity extends AppCompatActivity {
 
     private NewShoppingItemDialog dialog;
-    private List<ShoppingItem> items;
+    private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
 
     @Override
@@ -34,20 +37,29 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void menuAction(MenuItem menuItem) {
-        switch (menuItem.getItemId()) {
-            case R.id.removeAllItemsItem:
-                DialogUtils.showConfirmDialog(this,"Delete All Items?", "Are you sure you want to delete all items?", new Runnable() {
-                    @Override
-                    public void run() {
-                        removeAllItems();
-                    }
-                });
-        }
+    public void removeAllItems(MenuItem item) {
+        DialogUtils.showConfirmDialog(this, "Delete All Items?", "Are you sure you want to delete all items?", new Runnable() {
+            @Override
+            public void run() {
+                removeAllItems();
+            }
+        });
+    }
+
+    public void sortItemsSettings(MenuItem item) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sortList();
     }
 
     private void removeAllItems() {
         items.clear();
+        displayedItems.clear();
         ItemManager.saveItems(this, items);
         adapter.notifyDataSetChanged();
     }
@@ -58,10 +70,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         dialog = new NewShoppingItemDialog(this);
         items = ItemManager.getShoppingItems(this);
-
+        displayedItems = new ArrayList<>();
+        displayedItems.addAll(items);
         //items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
-        adapter = new ShoppingListAdapter(this, items, dialog, new Consumer<ShoppingItem>() {
+        adapter = new ShoppingListAdapter(this, displayedItems, dialog, new Consumer<ShoppingItem>() {
             @Override
             public void accept(ShoppingItem shoppingItem) {
                 ItemManager.saveItems(MainActivity.this, items);
@@ -83,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 items.remove(position);
+                displayedItems.remove(position);
                 ItemManager.saveItems(MainActivity.this, items);
                 adapter.notifyDataSetChanged();
             }
@@ -93,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void addItem(ShoppingItem item) {
         items.add(item);
+        displayedItems.add(item);
+        sortList();
         ItemManager.saveItems(this, items);
         adapter.notifyDataSetChanged();
     }
@@ -105,4 +121,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void sortList() {
+        Collections.sort(displayedItems, SortingSettings.getComparator());
+        adapter.notifyDataSetChanged();
+    }
+
 }

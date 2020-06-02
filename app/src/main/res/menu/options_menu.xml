@@ -3,7 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/removeAllItemsItem"
+        android:onClick="removeAllItems"
         android:title="Remove All Items"
-        app:showAsAction="withText"
-        android:onClick="menuAction" />
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/sortItemsItem"
+        android:onClick="sortItemsSettings"
+        android:title="Sort Items"
+        app:showAsAction="withText" />
 </menu>
