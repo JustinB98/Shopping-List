@@ -1,5 +1,7 @@
 package behrman.justin.shoppinglist.adapters;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +29,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private List<ShoppingItem> items;
     private NewShoppingItemDialog dialog;
     private Consumer<ShoppingItem> dataSetChanged;
+    private Context context;
 
-    public ShoppingListAdapter(List<ShoppingItem> items, NewShoppingItemDialog dialog, Consumer<ShoppingItem> dataSetChanged) {
+    public ShoppingListAdapter(Context context, List<ShoppingItem> items, NewShoppingItemDialog dialog, Consumer<ShoppingItem> dataSetChanged) {
+        this.context = context;
         this.items = items;
         this.dialog = dialog;
         this.dataSetChanged = dataSetChanged;
@@ -74,6 +78,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             this.detailsBtn = itemView.findViewById(R.id.detailsBtn);
         }
 
+        private void setColor() {
+            if (purchaseBox.isChecked()) {
+                itemView.setBackgroundColor(context.getColor(R.color.purchasedColor));
+            } else {
+                itemView.setBackgroundColor(context.getColor(R.color.notPurchasedColor));
+            }
+        }
+
         private void setWith(int position) {
             final ShoppingItem item = items.get(position);
             descriptionView.setText(item.getDescription());
@@ -90,6 +102,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                             item.copy(shoppingItem);
                             ShoppingListAdapter.super.notifyDataSetChanged();
                             ShoppingListAdapter.this.dataSetChanged.accept(item);
+                            setColor();
                         }
                     });
                 }
@@ -99,6 +112,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 public void onClick(View view) {
                     item.setPurchased(purchaseBox.isChecked());
                     ShoppingListAdapter.this.dataSetChanged.accept(item);
+                    setColor();
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +121,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     purchaseBox.setChecked(!purchaseBox.isChecked());
                     item.setPurchased(purchaseBox.isChecked());
                     ShoppingListAdapter.this.dataSetChanged.accept(item);
+                    setColor();
                 }
             });
+            setColor();
         }
 
     }
