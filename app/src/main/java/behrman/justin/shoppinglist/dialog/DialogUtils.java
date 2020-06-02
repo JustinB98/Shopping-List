@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 
 public class DialogUtils {
 
-    public static void showConfirmDialog(Context context, String prompt, final Runnable onAccept) {
+    public static void showConfirmDialog(Context context, String title, String prompt, final Runnable onAccept) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
-        builder.setTitle(prompt);
+        builder
+                .setTitle(title)
+                .setMessage(prompt);
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -24,5 +26,4 @@ public class DialogUtils {
         });
         builder.create().show();
     }
-
 }

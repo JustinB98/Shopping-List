@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public void menuAction(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.removeAllItemsItem:
-                DialogUtils.showConfirmDialog(this, "Are you sure you want to delete all items?", new Runnable() {
+                DialogUtils.showConfirmDialog(this,"Delete All Items?", "Are you sure you want to delete all items?", new Runnable() {
                     @Override
                     public void run() {
                         removeAllItems();
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         //items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
-        adapter = new ShoppingListAdapter(items, dialog, new Consumer<ShoppingItem>() {
+        adapter = new ShoppingListAdapter(this, items, dialog, new Consumer<ShoppingItem>() {
             @Override
             public void accept(ShoppingItem shoppingItem) {
                 ItemManager.saveItems(MainActivity.this, items);
