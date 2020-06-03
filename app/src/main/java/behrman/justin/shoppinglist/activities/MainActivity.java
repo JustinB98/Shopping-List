@@ -20,9 +20,9 @@ import java.util.List;
 
 import behrman.justin.shoppinglist.R;
 import behrman.justin.shoppinglist.adapters.ShoppingListAdapter;
+import behrman.justin.shoppinglist.db.ShoppingItemDataSource;
 import behrman.justin.shoppinglist.dialog.DialogUtils;
 import behrman.justin.shoppinglist.dialog.EditShoppingItemDialog;
-import behrman.justin.shoppinglist.model.ItemManager;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 import behrman.justin.shoppinglist.model.SortingSettings;
 
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
     private SortingSettings sortingSettings = new SortingSettings();
+    private ShoppingItemDataSource db;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -62,16 +63,27 @@ public class MainActivity extends AppCompatActivity {
     private void removeAllItems() {
         items.clear();
         displayedItems.clear();
-        ItemManager.saveItems(this, items);
+        db.open();
+        db.clearShoppingItems();
+        db.close();
         adapter.notifyDataSetChanged();
+    }
+
+    private void saveItem(ShoppingItem item) {
+        db.open();
+        db.putShoppingItemInDb(item);
+        db.close();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        db = new ShoppingItemDataSource(this);
+        db.open();
+        items = db.loadData();
+        db.close();
         dialog = new EditShoppingItemDialog(getSupportFragmentManager());
-        items = ItemManager.getShoppingItems(this);
         displayedItems = new ArrayList<>();
         displayedItems.addAll(items);
         //items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
@@ -79,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ShoppingListAdapter(this, displayedItems, dialog, new Consumer<ShoppingItem>() {
             @Override
             public void accept(ShoppingItem shoppingItem) {
-                ItemManager.saveItems(MainActivity.this, items);
+                saveItem(shoppingItem);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -97,9 +109,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
+                ShoppingItem item = items.get(position);
                 items.remove(position);
                 displayedItems.remove(position);
-                ItemManager.saveItems(MainActivity.this, items);
+                deleteItem(item);
                 adapter.notifyDataSetChanged();
             }
         };
@@ -107,11 +120,17 @@ public class MainActivity extends AppCompatActivity {
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+    private void deleteItem(ShoppingItem item) {
+        db.open();
+        db.deleteShoppingItem(item);
+        db.close();
+    }
+
     private void addItem(ShoppingItem item) {
         items.add(item);
         displayedItems.add(item);
         sortList();
-        ItemManager.saveItems(this, items);
+        saveItem(item);
         adapter.notifyDataSetChanged();
     }
 

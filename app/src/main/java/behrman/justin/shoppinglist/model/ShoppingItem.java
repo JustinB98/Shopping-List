@@ -2,13 +2,6 @@ package behrman.justin.shoppinglist.model;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Objects;
-
 public class ShoppingItem {
 
     private static final String TAG = ShoppingItem.class.getSimpleName();
@@ -89,41 +82,14 @@ public class ShoppingItem {
         this.estimatedPrice = item.estimatedPrice;
     }
 
-    public JSONObject toJSONObject() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", name);
-            jsonObject.put("category", category);
-            jsonObject.put("purchased", purchased);
-            jsonObject.put("description", description);
-            jsonObject.put("estimatedPrice", estimatedPrice);
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-        return jsonObject;
-    }
-
-    public static ShoppingItem fromJSONObject(JSONObject jsonObject) {
-        try {
-            String name = jsonObject.getString("name");
-            Category category = Category.valueOf(jsonObject.getString("category").toUpperCase());
-            boolean purchased = jsonObject.getBoolean("purchased");
-            String description = jsonObject.getString("description");
-            int estimatedPrice = jsonObject.getInt("estimatedPrice");
-            return new ShoppingItem(name, description, estimatedPrice, category, purchased);
-        } catch (JSONException e) {
-            Log.e(TAG, e.getMessage(), e);
-            return new ShoppingItem();
-        }
-    }
-
     @Override
     public String toString() {
         return "ShoppingItem{" +
-                "category=" + category +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", estimatedPrice=" + estimatedPrice +
+                ", category=" + category +
                 ", purchased=" + purchased +
                 '}';
     }
