@@ -20,7 +20,7 @@ public class ShoppingItemDataSource {
     private SQLiteDatabase database;
     private ShoppingItemDBHelper dbHelper;
 
-    private String TABLE_NAME = dbHelper.TABLE_NAME;
+    private final static String TABLE_NAME = ShoppingItemDBHelper.TABLE_NAME;
 
     public ShoppingItemDataSource(Context context) {
         dbHelper = new ShoppingItemDBHelper(context);

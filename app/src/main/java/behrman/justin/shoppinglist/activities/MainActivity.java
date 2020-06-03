@@ -181,15 +181,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortList() {
-        if (sortingSettings.noSort()) {
-            displayedItems.clear();
-            displayedItems.addAll(items);
-        } else {
-            Collections.sort(displayedItems, sortingSettings.getComparator());
-        }
+        Collections.sort(displayedItems, sortingSettings.getComparator());
         adapter.notifyDataSetChanged();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

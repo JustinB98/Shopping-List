@@ -6,10 +6,10 @@ import java.util.Comparator;
 
 public enum SortingOption {
 
-    NO_SORT(new Comparator<ShoppingItem>() {
+    DATE_ADDED(new Comparator<ShoppingItem>() {
         @Override
-        public int compare(ShoppingItem shoppingItem, ShoppingItem t1) {
-            return 0;
+        public int compare(ShoppingItem si1, ShoppingItem si2) {
+            return Long.compare(si1.getId(), si2.getId());
         }
     }),
     NAME(new Comparator<ShoppingItem>() {

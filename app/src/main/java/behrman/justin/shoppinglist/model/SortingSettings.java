@@ -8,15 +8,15 @@ import java.util.Comparator;
 public class SortingSettings implements Serializable {
 
     private SortingOption sortingOption;
-    private int ascending;
+    private boolean ascending;
 
     {
-        sortingOption = SortingOption.NO_SORT;
-        ascending = 0;
+        sortingOption = SortingOption.DATE_ADDED;
+        ascending = true;
     }
 
     public Comparator<ShoppingItem> getComparator() {
-        if (ascending != 0) return sortingOption.getComparator();
+        if (ascending) return sortingOption.getComparator();
         return new Comparator<ShoppingItem>() {
             @Override
             public int compare(ShoppingItem si1, ShoppingItem si2) {
@@ -30,19 +30,11 @@ public class SortingSettings implements Serializable {
     }
 
     public void setToAscending() {
-        ascending = 1;
+        ascending = true;
     }
 
     public void setToDescending() {
-        ascending = 0;
-    }
-
-    public int getAscending() {
-        return ascending;
-    }
-
-    public boolean noSort() {
-        return sortingOption == SortingOption.NO_SORT;
+        ascending = false;
     }
 
 }
