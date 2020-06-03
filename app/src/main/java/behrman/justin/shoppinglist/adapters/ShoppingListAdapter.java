@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,11 +63,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         private CheckBox purchaseBox;
         private Button editBtn;
         private ToggleButton detailsBtn;
-        private View itemView;
+        private CardView itemView;
 
         public ShoppingListViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.itemView = itemView;
+            this.itemView = (CardView) itemView;
             this.categoryImage = itemView.findViewById(R.id.categoryImage);
             this.descriptionView = itemView.findViewById(R.id.descriptionView);
             this.itemNameView =  itemView.findViewById(R.id.itemNameView);
@@ -78,9 +79,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         private void setColor() {
             if (purchaseBox.isChecked()) {
-                itemView.setBackgroundColor(context.getColor(R.color.purchasedColor));
+                itemView.setCardBackgroundColor(context.getColor(R.color.purchasedColor));
             } else {
-                itemView.setBackgroundColor(context.getColor(R.color.notPurchasedColor));
+                itemView.setCardBackgroundColor(context.getColor(R.color.notPurchasedColor));
             }
         }
 
