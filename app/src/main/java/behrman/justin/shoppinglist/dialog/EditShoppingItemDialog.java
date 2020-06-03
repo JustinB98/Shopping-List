@@ -106,6 +106,7 @@ public class EditShoppingItemDialog extends DialogFragment {
     }
 
     public void show(ShoppingItem initialSettings, Consumer<ShoppingItem> itemConsumer) {
+        if (this.isAdded()) return;
         /* Although not thread safe, and provides a global state, it does make it easier */
         /* than setting the button's onClick every time */
         this.itemConsumer = itemConsumer;
