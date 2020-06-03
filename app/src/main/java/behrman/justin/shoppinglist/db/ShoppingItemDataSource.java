@@ -73,7 +73,7 @@ public class ShoppingItemDataSource {
         if (item.getId() < 0) {
             long newId = insertShoppingItem(item);
             if (newId < 0) return false;
-            item.setId((int) newId);
+            item.setId(newId);
             return true;
         } else {
             return updateShoppingItem(item) < 0;

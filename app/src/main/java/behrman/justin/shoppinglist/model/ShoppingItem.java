@@ -6,7 +6,7 @@ public class ShoppingItem {
 
     private static final String TAG = ShoppingItem.class.getSimpleName();
 
-    private int id;
+    private long id;
     private String name, description;
     private int estimatedPrice;
     private Category category;
@@ -26,11 +26,11 @@ public class ShoppingItem {
         this.purchased = purchased;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
