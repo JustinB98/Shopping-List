@@ -86,10 +86,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             }
         }
 
-        private void setDescriptionViewVisibility(ShoppingItem item) {
+        private void setViewVisibility(ShoppingItem item) {
             int visibility = item.shouldHideDetails() ? View.GONE: View.VISIBLE;
             if (item.getDescription().isEmpty()) {
+                detailsBtn.setVisibility(View.GONE);
                 visibility = View.GONE;
+            } else {
+                detailsBtn.setVisibility(View.VISIBLE);
             }
             descriptionView.setVisibility(visibility);
         }
@@ -136,10 +139,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean newValue) {
                     item.setHideDetails(newValue);
-                    setDescriptionViewVisibility(item);
+                    setViewVisibility(item);
                 }
             });
-            setDescriptionViewVisibility(item);
+            setViewVisibility(item);
             detailsBtn.setChecked(item.shouldHideDetails());
             setColor();
         }
