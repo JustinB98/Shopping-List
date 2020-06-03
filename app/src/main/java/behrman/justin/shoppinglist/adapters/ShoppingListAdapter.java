@@ -88,6 +88,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         private void setDescriptionViewVisibility(ShoppingItem item) {
             int visibility = item.shouldHideDetails() ? View.GONE: View.VISIBLE;
+            if (item.getDescription().isEmpty()) {
+                visibility = View.GONE;
+            }
             descriptionView.setVisibility(visibility);
         }
 
