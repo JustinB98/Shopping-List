@@ -20,14 +20,14 @@ import java.util.List;
 import behrman.justin.shoppinglist.R;
 import behrman.justin.shoppinglist.adapters.ShoppingListAdapter;
 import behrman.justin.shoppinglist.dialog.DialogUtils;
+import behrman.justin.shoppinglist.dialog.EditShoppingItemDialog;
 import behrman.justin.shoppinglist.model.ItemManager;
 import behrman.justin.shoppinglist.model.ShoppingItem;
-import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
 import behrman.justin.shoppinglist.model.SortingSettings;
 
 public class MainActivity extends AppCompatActivity {
 
-    private NewShoppingItemDialog dialog;
+    private EditShoppingItemDialog dialog;
     private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dialog = new NewShoppingItemDialog(this);
+        dialog = new EditShoppingItemDialog(getSupportFragmentManager());
         items = ItemManager.getShoppingItems(this);
         displayedItems = new ArrayList<>();
         displayedItems.addAll(items);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAddItemPopUp(View view) {
-        dialog.show(new Consumer<ShoppingItem>() {
+        dialog.show(getSupportFragmentManager(), new Consumer<ShoppingItem>() {
             @Override
             public void accept(ShoppingItem shoppingItem) {
                 addItem(shoppingItem);

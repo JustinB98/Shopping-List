@@ -1,8 +1,6 @@
 package behrman.justin.shoppinglist.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +18,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
-import behrman.justin.shoppinglist.dialog.NewShoppingItemDialog;
+import behrman.justin.shoppinglist.dialog.EditShoppingItemDialog;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ShoppingListViewHolder> {
 
     private static final String TAG = ShoppingListAdapter.class.getSimpleName();
     private List<ShoppingItem> items;
-    private NewShoppingItemDialog dialog;
+    private EditShoppingItemDialog dialog;
     private Consumer<ShoppingItem> dataSetChanged;
     private Context context;
 
-    public ShoppingListAdapter(Context context, List<ShoppingItem> items, NewShoppingItemDialog dialog, Consumer<ShoppingItem> dataSetChanged) {
+    public ShoppingListAdapter(Context context, List<ShoppingItem> items, EditShoppingItemDialog dialog, Consumer<ShoppingItem> dataSetChanged) {
         this.context = context;
         this.items = items;
         this.dialog = dialog;
