@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private ShoppingListAdapter adapter;
     private SortingSettings sortingSettings = new SortingSettings();
     private ShoppingItemDataSource db;
+    private TextView infoView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         db.clearShoppingItems();
         db.close();
+        showInfoView();
         adapter.notifyDataSetChanged();
     }
 
@@ -80,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        infoView = findViewById(R.id.infoView);
+        initData();
+        initRecyclerView();
+    }
+
+    private void initData() {
         db = new ShoppingItemDataSource(this);
         db.open();
         items = db.loadData();
@@ -91,7 +100,22 @@ public class MainActivity extends AppCompatActivity {
         dialog = new EditShoppingItemDialog(getSupportFragmentManager());
         displayedItems = new ArrayList<>();
         displayedItems.addAll(items);
-        //items.add(new ShoppingItem("Good item", "Good description", 6.90, Category.BOOK, true));
+        if (items.isEmpty()) {
+            showInfoView();
+        } else {
+            hideInfoView();
+        }
+    }
+
+    private void showInfoView() {
+        infoView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideInfoView() {
+        infoView.setVisibility(View.GONE);
+    }
+
+    private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.list_recycler);
         adapter = new ShoppingListAdapter(this, displayedItems, dialog, new Consumer<ShoppingItem>() {
             @Override
@@ -114,15 +138,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                ShoppingItem item = items.get(position);
-                items.remove(position);
-                displayedItems.remove(position);
-                deleteItem(item);
-                adapter.notifyDataSetChanged();
+                removeItem(position);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void removeItem(int position) {
+        ShoppingItem item = items.get(position);
+        items.remove(position);
+        displayedItems.remove(position);
+        deleteItem(item);
+        if (items.isEmpty()) {
+            showInfoView();
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private void deleteItem(ShoppingItem item) {
@@ -136,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         displayedItems.add(item);
         sortList();
         saveItem(item);
+        hideInfoView();
         adapter.notifyDataSetChanged();
     }
 
