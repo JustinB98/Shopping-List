@@ -65,6 +65,20 @@ public class MainActivity extends AppCompatActivity {
         sortList();
     }
 
+    public void showAllItems(MenuItem menuItem) {
+        for (ShoppingItem item : items) {
+            item.setHideDetails(false);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    public void hideAllItems(MenuItem menuItem) {
+        for (ShoppingItem item : items) {
+            item.setHideDetails(true);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private void removeAllItems() {
         items.clear();
         displayedItems.clear();

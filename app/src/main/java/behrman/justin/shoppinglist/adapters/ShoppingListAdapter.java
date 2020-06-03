@@ -137,6 +137,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
             setDescriptionViewVisibility(item);
+            detailsBtn.setChecked(item.shouldHideDetails());
             setColor();
         }
 

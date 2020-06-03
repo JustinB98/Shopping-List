@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/hideAllDetails"
+        android:icon="@drawable/baseline_visibility_off_24"
+        android:onClick="hideAllItems"
+        android:title="Hide All Details"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/showAllDetails"
+        android:icon="@drawable/baseline_visibility_24"
+        android:onClick="showAllItems"
+        android:title="Show All Details"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/removeAllItemsItem"
         android:onClick="removeAllItems"
         android:title="Remove All Items"
         app:showAsAction="withText" />
+
     <item
         android:id="@+id/sortItemsItem"
         android:onClick="sortItemsSettings"

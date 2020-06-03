@@ -99,6 +99,7 @@ public class ShoppingItem {
                 ", estimatedPrice=" + estimatedPrice +
                 ", category=" + category +
                 ", purchased=" + purchased +
+                ", hideDetails=" + hideDetails +
                 '}';
     }
 }
