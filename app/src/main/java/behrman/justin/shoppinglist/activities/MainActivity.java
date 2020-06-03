@@ -1,15 +1,17 @@
 package behrman.justin.shoppinglist.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import behrman.justin.shoppinglist.R;
@@ -26,14 +29,13 @@ import behrman.justin.shoppinglist.db.ShoppingItemDataSource;
 import behrman.justin.shoppinglist.dialog.DialogUtils;
 import behrman.justin.shoppinglist.dialog.EditShoppingItemDialog;
 import behrman.justin.shoppinglist.model.ShoppingItem;
-import behrman.justin.shoppinglist.model.SortingSettings;
+import behrman.justin.shoppinglist.model.SortingOption;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditShoppingItemDialog dialog;
     private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
-    private SortingSettings sortingSettings = new SortingSettings();
     private ShoppingItemDataSource db;
     private TextView infoView;
 
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         db.putShoppingItemInDb(item);
         db.close();
+        sortList();
     }
 
     @Override
@@ -165,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
     private void addItem(ShoppingItem item) {
         items.add(item);
         displayedItems.add(item);
-        sortList();
         saveItem(item);
         hideInfoView();
         adapter.notifyDataSetChanged();
@@ -181,14 +183,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortList() {
-        Collections.sort(displayedItems, sortingSettings.getComparator());
+        SharedPreferences sharedPreferences = getSharedPreferences("behrman.justin.shoppinglist.settings", Context.MODE_PRIVATE);
+        String sorterStr = sharedPreferences.getString("sortingOption", "DATE_ADDED");
+        boolean ascending = sharedPreferences.getInt("ascending", 1) != 0;
+        final SortingOption sorter = SortingOption.valueOf(sorterStr);
+        Comparator<ShoppingItem> comparator;
+        if (ascending) {
+            comparator = sorter.getComparator();
+        } else {
+            comparator = new Comparator<ShoppingItem>() {
+                @Override
+                public int compare(ShoppingItem si1, ShoppingItem si2) {
+                    return sorter.getComparator().compare(si2, si1);
+                }
+            };
+        }
+        Collections.sort(displayedItems, comparator);
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode != 1 || resultCode != RESULT_OK) return;
-        sortingSettings = (SortingSettings) data.getSerializableExtra("settings");
-    }
 }
