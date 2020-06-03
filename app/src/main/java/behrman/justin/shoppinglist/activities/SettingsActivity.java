@@ -2,7 +2,9 @@ package behrman.justin.shoppinglist.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.RadioGroup;
@@ -38,13 +40,18 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void submit(View view) {
         SortingOption option = (SortingOption) sortOptionsSpinner.getSelectedItem();
-        SortingSettings.setSortingOption(option);
+        SortingSettings sortingSettings = new SortingSettings();
+        sortingSettings.setSortingOption(option);
         int radioBtnId = sortOrderGroup.getCheckedRadioButtonId();
         if (radioBtnId == R.id.descendingRadioBtn) {
-            SortingSettings.setToDescending();
+            sortingSettings.setToDescending();
         } else {
-            SortingSettings.setToAscending();
+            /* Make default ascending */
+            sortingSettings.setToAscending();
         }
+        Intent intent = new Intent();
+        intent.putExtra("settings", sortingSettings);
+        setResult(RESULT_OK, intent);
         finish();
     }
 

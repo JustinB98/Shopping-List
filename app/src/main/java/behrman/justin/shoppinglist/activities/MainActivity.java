@@ -1,6 +1,7 @@
 package behrman.justin.shoppinglist.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Consumer;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private EditShoppingItemDialog dialog;
     private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
+    private SortingSettings sortingSettings = new SortingSettings();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sortItemsSettings(MenuItem item) {
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -123,8 +125,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortList() {
-        Collections.sort(displayedItems, SortingSettings.getComparator());
+        if (sortingSettings.noSort()) {
+            displayedItems.clear();
+            displayedItems.addAll(items);
+        } else {
+            Collections.sort(displayedItems, sortingSettings.getComparator());
+        }
         adapter.notifyDataSetChanged();
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != 1 || resultCode != RESULT_OK) return;
+        sortingSettings = (SortingSettings) data.getSerializableExtra("settings");
+    }
 }

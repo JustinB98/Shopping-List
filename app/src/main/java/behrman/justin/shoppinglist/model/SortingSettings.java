@@ -1,18 +1,21 @@
 package behrman.justin.shoppinglist.model;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class SortingSettings {
+public class SortingSettings implements Serializable {
 
-    private static SortingOption sortingOption;
-    private static int ascending;
+    private SortingOption sortingOption;
+    private int ascending;
 
-    static {
+    {
         sortingOption = SortingOption.NO_SORT;
         ascending = 0;
     }
 
-    public static Comparator<ShoppingItem> getComparator() {
+    public Comparator<ShoppingItem> getComparator() {
         if (ascending != 0) return sortingOption.getComparator();
         return new Comparator<ShoppingItem>() {
             @Override
@@ -22,16 +25,24 @@ public class SortingSettings {
         };
     }
 
-    public static void setSortingOption(SortingOption sortingOption) {
-        SortingSettings.sortingOption = sortingOption;
+    public void setSortingOption(SortingOption sortingOption) {
+        this.sortingOption = sortingOption;
     }
 
-    public static void setToAscending() {
+    public void setToAscending() {
         ascending = 1;
     }
 
-    public static void setToDescending() {
+    public void setToDescending() {
         ascending = 0;
+    }
+
+    public int getAscending() {
+        return ascending;
+    }
+
+    public boolean noSort() {
+        return sortingOption == SortingOption.NO_SORT;
     }
 
 }
