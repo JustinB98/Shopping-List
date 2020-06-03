@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
         db = new ShoppingItemDataSource(this);
         db.open();
         items = db.loadData();
+        if (items == null) {
+            Toast.makeText(this, "Trouble loading items", Toast.LENGTH_LONG).show();
+            items = new ArrayList<>();
+        }
         db.close();
         dialog = new EditShoppingItemDialog(getSupportFragmentManager());
         displayedItems = new ArrayList<>();
