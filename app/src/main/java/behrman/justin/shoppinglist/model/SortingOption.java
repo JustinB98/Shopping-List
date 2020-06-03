@@ -15,7 +15,7 @@ public enum SortingOption {
     NAME(new Comparator<ShoppingItem>() {
         @Override
         public int compare(ShoppingItem si1, ShoppingItem si2) {
-            return si1.getName().compareTo(si2.getName());
+            return si1.getName().compareToIgnoreCase(si2.getName());
         }
     }),
     PRICE(new Comparator<ShoppingItem>() {
