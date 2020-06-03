@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import behrman.justin.shoppinglist.model.Category;
@@ -70,20 +69,6 @@ public class ShoppingItemDataSource {
         }
     }
 
-    public int getLastShoppingItemId() {
-        try {
-            String query = "SELECT MAX(_id) FROM " + TABLE_NAME;
-            Cursor cursor = database.rawQuery(query, null);
-            cursor.moveToFirst();
-            int lastId = cursor.getInt(0);
-            cursor.close();
-            return lastId;
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage(), e);
-            return -1;
-        }
-    }
-
     public boolean putShoppingItemInDb(ShoppingItem item) {
         if (item.getId() < 0) {
             long newId = insertShoppingItem(item);
@@ -126,6 +111,7 @@ public class ShoppingItemDataSource {
                 items.add(item);
                 cursor.moveToNext();
             }
+            cursor.close();
             return items;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
