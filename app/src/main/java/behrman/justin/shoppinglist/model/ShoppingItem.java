@@ -13,10 +13,15 @@ public class ShoppingItem {
 
     private static final String TAG = ShoppingItem.class.getSimpleName();
 
+    private int id;
     private String name, description;
     private int estimatedPrice;
     private Category category;
     private boolean purchased;
+
+    {
+        id = -1;
+    }
 
     public ShoppingItem() {}
 
@@ -26,6 +31,14 @@ public class ShoppingItem {
         this.estimatedPrice = estimatedPrice;
         this.category = category;
         this.purchased = purchased;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Category getCategory() {
