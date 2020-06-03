@@ -75,7 +75,7 @@
             app:layout_constraintBottom_toTopOf="@id/purchasedBox"
             app:layout_constraintLeft_toRightOf="@id/categoryImage"
             app:layout_constraintRight_toLeftOf="@id/editBtn"
-            app:layout_constraintTop_toTopOf="@id/topBarrier" />
+            app:layout_constraintTop_toBottomOf="@id/itemNameView" />
 
         <CheckBox
             android:id="@+id/purchasedBox"
@@ -101,8 +101,8 @@
             android:id="@+id/detailsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="Show\nDetails"
-            android:textOn="Hide\nDetails"
+            android:textOff="Hide\nDetails"
+            android:textOn="Show\nDetails"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/editBtn"

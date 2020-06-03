@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
@@ -85,6 +86,11 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             }
         }
 
+        private void setDescriptionViewVisibility(ShoppingItem item) {
+            int visibility = item.shouldHideDetails() ? View.GONE: View.VISIBLE;
+            descriptionView.setVisibility(visibility);
+        }
+
         private void setWith(int position) {
             final ShoppingItem item = items.get(position);
             descriptionView.setText(item.getDescription());
@@ -123,6 +129,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     setColor();
                 }
             });
+            detailsBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean newValue) {
+                    item.setHideDetails(newValue);
+                    setDescriptionViewVisibility(item);
+                }
+            });
+            setDescriptionViewVisibility(item);
             setColor();
         }
 

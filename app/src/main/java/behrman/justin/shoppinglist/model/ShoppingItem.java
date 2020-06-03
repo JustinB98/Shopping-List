@@ -10,7 +10,7 @@ public class ShoppingItem {
     private String name, description;
     private int estimatedPrice;
     private Category category;
-    private boolean purchased;
+    private boolean purchased, hideDetails;
 
     {
         id = -1;
@@ -72,6 +72,14 @@ public class ShoppingItem {
 
     public void setPurchased(boolean purchased) {
         this.purchased = purchased;
+    }
+
+    public boolean shouldHideDetails() {
+        return hideDetails;
+    }
+
+    public void setHideDetails(boolean hideDetails) {
+        this.hideDetails = hideDetails;
     }
 
     public void copy(ShoppingItem item) {
