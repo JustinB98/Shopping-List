@@ -31,8 +31,8 @@ public class ShoppingItemDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        Log.w(TAG, "Upgrading database " + DATABASE_NAME + ", deleting all data");
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(sqLiteDatabase);
+        Log.i(TAG, "Upgrading database " + DATABASE_NAME + " which is a no op. No data was deleted or modified");
+        // sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        // onCreate(sqLiteDatabase);
     }
 }
