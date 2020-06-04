@@ -87,14 +87,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         }
 
         private void setViewVisibility(ShoppingItem item) {
-            int visibility = item.shouldHideDetails() ? View.GONE: View.VISIBLE;
+            int descriptionViewVisibility = item.shouldHideDetails() ? View.GONE: View.VISIBLE;
+            int detailsBtnVisibility = item.getDescription().isEmpty() ? View.GONE : View.VISIBLE;
             if (item.getDescription().isEmpty()) {
-                detailsBtn.setVisibility(View.GONE);
-                visibility = View.GONE;
-            } else {
-                detailsBtn.setVisibility(View.VISIBLE);
+                descriptionViewVisibility = View.GONE;
             }
-            descriptionView.setVisibility(visibility);
+            detailsBtn.setVisibility(detailsBtnVisibility);
+            descriptionView.setVisibility(descriptionViewVisibility);
         }
 
         private void setWith(int position) {
