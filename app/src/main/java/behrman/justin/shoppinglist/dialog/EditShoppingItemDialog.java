@@ -4,8 +4,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -58,7 +62,37 @@ public class EditShoppingItemDialog extends DialogFragment {
         extractViews(view);
         initSpinner();
         setUpViews();
-        return builder.create();
+
+        AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                setUpTextListeners((AlertDialog) dialogInterface);
+            }
+        });
+        return dialog;
+    }
+
+    private void setUpTextListeners(AlertDialog dialog) {
+        boolean nameEmpty = currentItem.getName().trim().isEmpty();
+        final Button positiveBtn = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveBtn.setEnabled(!nameEmpty);
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                boolean nameTextEmpty = nameText.getText().toString().trim().isEmpty();
+                boolean priceTextEmpty = costText.getText().toString().trim().isEmpty();
+                positiveBtn.setEnabled(!nameTextEmpty && !priceTextEmpty);
+            }
+        };
+        nameText.addTextChangedListener(watcher);
+        costText.addTextChangedListener(watcher);
     }
 
     private void setUpViews() {
