@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         items = db.loadData();
         if (items == null) {
-            Toast.makeText(this, "Trouble loading items", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.loading_items_error, Toast.LENGTH_LONG).show();
             items = new ArrayList<>();
         }
         db.close();

@@ -115,7 +115,7 @@ public class EditShoppingItemDialog extends DialogFragment {
     private boolean invalidFields(String... strings) {
         for (String s : strings) {
             if (s.isEmpty()) {
-                Toast.makeText(getContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.fill_all_fields_prompt, Toast.LENGTH_SHORT).show();
                 return true;
             }
         }

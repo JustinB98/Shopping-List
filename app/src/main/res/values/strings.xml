@@ -18,4 +18,6 @@
     <string name="delete_items_confirm_title">Delete All Items?</string>
     <string name="delete_items_confirm_description">Are you sure you want to delete all items?</string>
     <string name="save">Save</string>
+    <string name="fill_all_fields_prompt">Please fill out all fields</string>
+    <string name="loading_items_error">Trouble loading items</string>
 </resources>
