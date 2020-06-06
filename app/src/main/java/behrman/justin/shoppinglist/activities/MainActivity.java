@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +24,7 @@ import java.util.List;
 
 import behrman.justin.shoppinglist.R;
 import behrman.justin.shoppinglist.adapters.ShoppingListAdapter;
+import behrman.justin.shoppinglist.constants.SharedPreferencesConstants;
 import behrman.justin.shoppinglist.db.ShoppingItemDataSource;
 import behrman.justin.shoppinglist.dialog.DialogUtils;
 import behrman.justin.shoppinglist.dialog.EditShoppingItemDialog;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeAllItems(MenuItem item) {
-        DialogUtils.showConfirmDialog(this, R.string.delete_items_confirm_title,R.string.delete_items_confirm_description, new Runnable() {
+        DialogUtils.showConfirmDialog(this, R.string.delete_items_confirm_title, R.string.delete_items_confirm_description, new Runnable() {
             @Override
             public void run() {
                 removeAllItems();
@@ -197,9 +197,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortList() {
-        SharedPreferences sharedPreferences = getSharedPreferences("behrman.justin.shoppinglist.settings", Context.MODE_PRIVATE);
-        String sorterStr = sharedPreferences.getString("sortingOption", "DATE_ADDED");
-        boolean ascending = sharedPreferences.getInt("ascending", 1) != 0;
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesConstants.FILE_NAME, Context.MODE_PRIVATE);
+        String sorterStr = sharedPreferences.getString(SharedPreferencesConstants.SORTING_OPTION_KEY, SortingOption.DATE_ADDED.name());
+        boolean ascending = sharedPreferences.getInt(SharedPreferencesConstants.ASCENDING_KEY, 1) != 0;
         final SortingOption sorter = SortingOption.valueOf(sorterStr);
         Comparator<ShoppingItem> comparator;
         if (ascending) {

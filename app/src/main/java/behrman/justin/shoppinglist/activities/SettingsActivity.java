@@ -4,18 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import behrman.justin.shoppinglist.R;
+import behrman.justin.shoppinglist.constants.SharedPreferencesConstants;
 import behrman.justin.shoppinglist.model.SortingOption;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -34,9 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void setInitialValues() {
-        SharedPreferences sharedPreferences = getSharedPreferences("behrman.justin.shoppinglist.settings", Context.MODE_PRIVATE);
-        String sorterStr = sharedPreferences.getString("sortingOption", "DATE_ADDED");
-        boolean ascending = sharedPreferences.getInt("ascending", 1) != 0;
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesConstants.FILE_NAME, Context.MODE_PRIVATE);
+        String sorterStr = sharedPreferences.getString(SharedPreferencesConstants.SORTING_OPTION_KEY, SortingOption.DATE_ADDED.name());
+        boolean ascending = sharedPreferences.getInt(SharedPreferencesConstants.ASCENDING_KEY, 1) != 0;
         if (ascending) {
             sortOrderGroup.check(R.id.ascendingRadioBtn);
         } else {
@@ -69,10 +67,10 @@ public class SettingsActivity extends AppCompatActivity {
         SortingOption option = (SortingOption) sortOptionsSpinner.getSelectedItem();
         int radioBtnId = sortOrderGroup.getCheckedRadioButtonId();
         boolean ascending = radioBtnId != R.id.descendingRadioBtn;
-        SharedPreferences sharedPreferences = getSharedPreferences("behrman.justin.shoppinglist.settings", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SharedPreferencesConstants.FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("sortingOption", option.name());
-        editor.putInt("ascending", ascending ? 1 : 0);
+        editor.putString(SharedPreferencesConstants.SORTING_OPTION_KEY, option.name());
+        editor.putInt(SharedPreferencesConstants.ASCENDING_KEY, ascending ? 1 : 0);
         editor.apply();
         finish();
     }
