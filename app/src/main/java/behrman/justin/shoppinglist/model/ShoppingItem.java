@@ -82,7 +82,7 @@ public class ShoppingItem {
         this.hideDetails = hideDetails;
     }
 
-    public void copy(ShoppingItem item) {
+    public void copyFrom(ShoppingItem item) {
         this.name = item.name;
         this.category = item.category;
         this.purchased = item.purchased;

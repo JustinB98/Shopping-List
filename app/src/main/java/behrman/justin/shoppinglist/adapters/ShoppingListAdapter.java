@@ -109,7 +109,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     dialog.show(item, new Consumer<ShoppingItem>() {
                         @Override
                         public void accept(ShoppingItem shoppingItem) {
-                            item.copy(shoppingItem);
+                            item.copyFrom(shoppingItem);
                             ShoppingListAdapter.this.dataSetChanged.accept(item);
                             setColor();
                         }
