@@ -5,9 +5,9 @@
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="item_category">Item category:</string>
-    <string name="name">Name</string>
-    <string name="cost">Cost</string>
-    <string name="description">Description</string>
+    <string name="name">Name (Required)</string>
+    <string name="cost">Cost (Required)</string>
+    <string name="description">Description (Optional)</string>
     <string name="purchased">Purchased</string>
     <string name="category_image_description">Image Representing Item</string>
     <string name="edit">Edit</string>
