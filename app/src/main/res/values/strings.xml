@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Shopping List</string>
     <string name="preferences_file">behrman.justin.shoppinglist.items</string>
+    <string name="no_items_msg">Click on the plus button to start adding items\n\nSwipe an item to the right to delete it</string>
+    <string name="submit">Submit</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+    <string name="item_category">Item category:</string>
+    <string name="name">Name</string>
+    <string name="cost">Cost</string>
+    <string name="description">Description</string>
+    <string name="purchased">Purchased</string>
+    <string name="category_image_description">Image Representing Item</string>
+    <string name="edit">Edit</string>
+    <string name="hide_details">Hide\nDetails</string>
+    <string name="show_details">Show\nDetails</string>
 </resources>

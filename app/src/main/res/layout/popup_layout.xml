@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:text="Item category:" />
+        android:text="@string/item_category" />
 
     <Spinner
         android:id="@+id/categorySpinner"
@@ -20,7 +20,8 @@
         android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Name"
+        android:hint="@string/name"
+        android:importantForAutofill="no"
         android:inputType="textCapWords"
         android:maxLength="50" />
 
@@ -28,7 +29,8 @@
         android:id="@+id/costText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Cost"
+        android:hint="@string/cost"
+        android:importantForAutofill="no"
         android:inputType="number"
         android:maxLength="9" />
 
@@ -36,7 +38,8 @@
         android:id="@+id/descriptionText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description"
+        android:hint="@string/description"
+        android:importantForAutofill="no"
         android:inputType="textCapSentences"
         android:maxLength="70" />
 
@@ -44,6 +47,6 @@
         android:id="@+id/alreadyPurchasedBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Purchased" />
+        android:text="@string/purchased" />
 
 </LinearLayout>

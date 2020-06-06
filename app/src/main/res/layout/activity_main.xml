@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
     <TextView
         android:id="@+id/infoView"
         android:layout_width="wrap_content"
@@ -21,7 +20,7 @@
         android:layout_gravity="center"
         android:textSize="24sp"
         android:padding="16dp"
-        android:text="Click on the plus button to start adding items\n\nSwipe an item to the right to delete it"
+        android:text="@string/no_items_msg"
         android:textAlignment="center" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
-        android:contentDescription="Submit"
+        android:contentDescription="@string/submit"
         android:onClick="showAddItemPopUp"
         android:src="@drawable/baseline_add_24" />
 
