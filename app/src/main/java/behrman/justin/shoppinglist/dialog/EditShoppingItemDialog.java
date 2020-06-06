@@ -2,12 +2,14 @@ package behrman.justin.shoppinglist.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -68,6 +70,8 @@ public class EditShoppingItemDialog extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialogInterface) {
                 setUpTextListeners((AlertDialog) dialogInterface);
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(nameText, InputMethodManager.SHOW_IMPLICIT);
             }
         });
         return dialog;
