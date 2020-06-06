@@ -15,15 +15,9 @@ public class DialogUtils {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 onAccept.run();
-                dialogInterface.dismiss();
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
+        builder.setNegativeButton("Cancel", null);
         builder.create().show();
     }
 }
