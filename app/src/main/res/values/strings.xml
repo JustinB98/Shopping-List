@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Shopping List</string>
-    <string name="preferences_file">behrman.justin.shoppinglist.items</string>
     <string name="no_items_msg">Click on the plus button to start adding items\n\nSwipe an item to the right to delete it</string>
     <string name="submit">Submit</string>
     <string name="ascending">Ascending</string>
