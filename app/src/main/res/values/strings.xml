@@ -13,4 +13,8 @@
     <string name="edit">Edit</string>
     <string name="hide_details">Hide\nDetails</string>
     <string name="show_details">Show\nDetails</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_items_confirm_title">Delete All Items?</string>
+    <string name="delete_items_confirm_description">Are you sure you want to delete all items?</string>
 </resources>

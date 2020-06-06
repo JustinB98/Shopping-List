@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void removeAllItems(MenuItem item) {
-        DialogUtils.showConfirmDialog(this, "Delete All Items?", "Are you sure you want to delete all items?", new Runnable() {
+        DialogUtils.showConfirmDialog(this, R.string.delete_items_confirm_title,R.string.delete_items_confirm_description, new Runnable() {
             @Override
             public void run() {
                 removeAllItems();
