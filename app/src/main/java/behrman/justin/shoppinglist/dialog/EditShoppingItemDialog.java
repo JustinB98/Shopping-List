@@ -35,7 +35,7 @@ public class EditShoppingItemDialog extends DialogFragment {
     private CheckBox purchasedBox;
     private Spinner categorySpinner;
 
-    private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", -1, Category.values()[0], false);
+    private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", -1, Category.FOOD, false);
 
     private ShoppingItem currentItem;
 
