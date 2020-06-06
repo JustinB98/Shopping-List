@@ -110,7 +110,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                         @Override
                         public void accept(ShoppingItem shoppingItem) {
                             item.copy(shoppingItem);
-                            ShoppingListAdapter.super.notifyDataSetChanged();
                             ShoppingListAdapter.this.dataSetChanged.accept(item);
                             setColor();
                         }

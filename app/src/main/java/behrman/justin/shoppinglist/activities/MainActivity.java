@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         if (items.isEmpty()) {
             showInfoView();
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRemoved(position);
     }
 
     private void deleteItem(ShoppingItem item) {
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         displayedItems.add(item);
         saveItem(item);
         hideInfoView();
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemInserted(items.size() - 1);
     }
 
     public void showAddItemPopUp(View view) {
