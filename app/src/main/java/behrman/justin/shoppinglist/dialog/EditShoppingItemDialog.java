@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -29,8 +28,6 @@ import behrman.justin.shoppinglist.model.ShoppingItem;
 
 public class EditShoppingItemDialog extends DialogFragment {
 
-    private static final String TAG = EditShoppingItemDialog.class.getSimpleName();
-
     private FragmentManager fragmentManager;
 
     private Consumer<ShoppingItem> itemConsumer;
@@ -38,7 +35,7 @@ public class EditShoppingItemDialog extends DialogFragment {
     private CheckBox purchasedBox;
     private Spinner categorySpinner;
 
-    private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", 0, Category.values()[0], false);
+    private final static ShoppingItem DEFAULT_SHOPPING_ITEM = new ShoppingItem("", "", -1, Category.values()[0], false);
 
     private ShoppingItem currentItem;
 
@@ -69,9 +66,9 @@ public class EditShoppingItemDialog extends DialogFragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                setUpTextListeners((AlertDialog) dialogInterface);
                 InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.showSoftInput(nameText, InputMethodManager.SHOW_IMPLICIT);
+                setUpTextListeners((AlertDialog) dialogInterface);
             }
         });
         return dialog;
@@ -101,7 +98,8 @@ public class EditShoppingItemDialog extends DialogFragment {
 
     private void setUpViews() {
         nameText.setText(currentItem.getName());
-        costText.setText(currentItem.getEstimatedPrice() + "");
+        if (currentItem.getEstimatedPrice() >= 0) costText.setText(currentItem.getEstimatedPrice() + "");
+        else costText.setText("");
         descriptionText.setText(currentItem.getDescription());
         purchasedBox.setChecked(currentItem.isPurchased());
         categorySpinner.setSelection(currentItem.getCategory().ordinal());
