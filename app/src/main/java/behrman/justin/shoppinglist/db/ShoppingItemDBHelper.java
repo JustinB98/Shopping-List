@@ -5,23 +5,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import behrman.justin.shoppinglist.constants.DatabaseConstants;
+
 public class ShoppingItemDBHelper extends SQLiteOpenHelper {
 
     private static final String TAG = ShoppingItemDBHelper.class.getSimpleName();
 
-    private static final String DATABASE_NAME = "myshoppingitems.db";
-    private static final int DATABASE_VERSION = 1;
-
-    public static final String TABLE_NAME = "shoppingitem";
-
     private static final String CREATE_SHOPPING_ITEM_TABLE =
-            "CREATE TABLE " + TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "CREATE TABLE " + DatabaseConstants.TABLE_NAME + " (_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "name TEXT NOT NULL," +
                     "description TEXT, estimatedPrice INTEGER," +
                     "category TEXT, purchased INTEGER)";
 
     public ShoppingItemDBHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DatabaseConstants.DATABASE_NAME, null, DatabaseConstants.DATABASE_VERSION);
     }
 
     @Override
@@ -31,7 +28,7 @@ public class ShoppingItemDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        Log.i(TAG, "Upgrading database " + DATABASE_NAME + " which is a no op. No data was deleted or modified");
+        Log.i(TAG, "Upgrading database " + DatabaseConstants.DATABASE_NAME + " which is a no op. No data was deleted or modified");
         // sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         // onCreate(sqLiteDatabase);
     }

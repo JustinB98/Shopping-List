@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import behrman.justin.shoppinglist.constants.DatabaseConstants;
 import behrman.justin.shoppinglist.model.Category;
 import behrman.justin.shoppinglist.model.ShoppingItem;
 
@@ -20,7 +21,7 @@ public class ShoppingItemDataSource {
     private SQLiteDatabase database;
     private ShoppingItemDBHelper dbHelper;
 
-    private final static String TABLE_NAME = ShoppingItemDBHelper.TABLE_NAME;
+    private final static String TABLE_NAME = DatabaseConstants.TABLE_NAME;
 
     public ShoppingItemDataSource(Context context) {
         dbHelper = new ShoppingItemDBHelper(context);
