@@ -27,15 +27,7 @@ public enum SortingOption {
     PURCHASE_STATUS(new Comparator<ShoppingItem>() {
         @Override
         public int compare(ShoppingItem si1, ShoppingItem si2) {
-            boolean firstPurchased = si1.isPurchased();
-            boolean secondPurchased = si2.isPurchased();
-            if (firstPurchased && !secondPurchased) {
-                return 1;
-            } else if (!firstPurchased && secondPurchased) {
-                return -1;
-            } else {
-                return 0;
-            }
+            return Boolean.compare(si1.isPurchased(), si2.isPurchased());
         }
     });
 
