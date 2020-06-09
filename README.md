@@ -26,3 +26,4 @@ App to manage a list when you go shopping and saves all data in a sqlite databas
   * Book
   * Other
 * The sorting options will be saved (in Shared Preferences)
+* When adding or editing an item, the item name and price is required but the description is not. This means if a description is not given, then there will not be a 'Show Details' toggle button
