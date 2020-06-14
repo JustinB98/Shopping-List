@@ -75,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
         sortList();
     }
 
+    @Override
+    protected void onStop() {
+        if (currentlyShownSnackbar != null) {
+            currentlyShownSnackbar.dismiss();
+        }
+        super.onStop();
+    }
+
     public void showAllItems(MenuItem menuItem) {
         for (ShoppingItem item : displayedItems) {
             item.setHideDetails(false);
