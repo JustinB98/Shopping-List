@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private EditShoppingItemDialog dialog;
     private List<ShoppingItem> displayedItems;
     private ShoppingListAdapter adapter;
-    private ShoppingItemDataSource db;
+    private ShoppingItemDataSource database;
     private TextView infoView;
     private RecyclerView recyclerView;
 
@@ -99,17 +97,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void removeAllItems() {
         displayedItems.clear();
-        db.open();
-        db.clearShoppingItems();
-        db.close();
+        database.open();
+        database.clearShoppingItems();
+        database.close();
         showInfoView();
         adapter.notifyDataSetChanged();
     }
 
     private void saveItem(ShoppingItem item) {
-        db.open();
-        db.putShoppingItemInDb(item);
-        db.close();
+        database.open();
+        database.putShoppingItemInDb(item);
+        database.close();
     }
 
     @Override
@@ -124,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        db = new ShoppingItemDataSource(this);
-        db.open();
-        displayedItems = db.loadData();
+        database = new ShoppingItemDataSource(this);
+        database.open();
+        displayedItems = database.loadData();
         if (displayedItems == null) {
             Toast.makeText(this, R.string.loading_items_error, Toast.LENGTH_LONG).show();
             displayedItems = new ArrayList<>();
         }
-        db.close();
+        database.close();
         dialog = new EditShoppingItemDialog(getSupportFragmentManager());
         if (displayedItems.isEmpty()) {
             showInfoView();
@@ -192,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDismissed(Snackbar transientBottomBar, int event) {
                 super.onDismissed(transientBottomBar, event);
+                /* If the event was pressing the undo btn, don't remove from database */
                 if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) return;
                 removeItemFromDatabase(item);
             }
@@ -199,18 +198,17 @@ public class MainActivity extends AppCompatActivity {
         currentlyShownSnackbar.show();
     }
 
-    private ShoppingItem removeItemFromDatabase(ShoppingItem item) {
+    private void removeItemFromDatabase(ShoppingItem item) {
         deleteItem(item);
         if (displayedItems.isEmpty()) {
             showInfoView();
         }
-        return item;
     }
 
     private void deleteItem(ShoppingItem item) {
-        db.open();
-        db.deleteShoppingItem(item);
-        db.close();
+        database.open();
+        database.deleteShoppingItem(item);
+        database.close();
     }
 
     private void addItem(ShoppingItem item) {
