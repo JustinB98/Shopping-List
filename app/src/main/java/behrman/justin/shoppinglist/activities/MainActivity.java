@@ -11,12 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,11 +38,16 @@ import behrman.justin.shoppinglist.model.SortingOption;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     private EditShoppingItemDialog dialog;
     private List<ShoppingItem> items, displayedItems;
     private ShoppingListAdapter adapter;
     private ShoppingItemDataSource db;
     private TextView infoView;
+    private RecyclerView recyclerView;
+
+    private Snackbar currentlyShownSnackbar;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -94,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         db.open();
         db.putShoppingItemInDb(item);
         db.close();
-        sortList();
     }
 
     @Override
@@ -136,11 +144,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.list_recycler);
+        recyclerView = findViewById(R.id.list_recycler);
         adapter = new ShoppingListAdapter(this, displayedItems, dialog, new Consumer<ShoppingItem>() {
             @Override
             public void accept(ShoppingItem shoppingItem) {
                 saveItem(shoppingItem);
+                sortList();
             }
         });
         recyclerView.setAdapter(adapter);
@@ -158,22 +167,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                removeItem(position);
+                ShoppingItem item = displayedItems.remove(position);
+                adapter.notifyItemRemoved(position);
+                createSnackBar(item, position);
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    private void removeItem(int position) {
-        ShoppingItem item = items.get(position);
-        items.remove(position);
-        displayedItems.remove(position);
+    private void createSnackBar(final ShoppingItem item, final int position) {
+        currentlyShownSnackbar = Snackbar.make(recyclerView, "Removed " + item.getName(), Snackbar.LENGTH_LONG).setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayedItems.add(position, item);
+                adapter.notifyItemInserted(position);
+            }
+        }).addCallback(new Snackbar.Callback() {
+            @Override
+            public void onDismissed(Snackbar transientBottomBar, int event) {
+                super.onDismissed(transientBottomBar, event);
+                if (event == Snackbar.Callback.DISMISS_EVENT_ACTION) return;
+                removeItemFromDatabase(item);
+            }
+        });
+        currentlyShownSnackbar.show();
+    }
+
+    private ShoppingItem removeItemFromDatabase(ShoppingItem item) {
         deleteItem(item);
         if (items.isEmpty()) {
             showInfoView();
         }
-        adapter.notifyItemRemoved(position);
+        return item;
     }
 
     private void deleteItem(ShoppingItem item) {
@@ -188,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         saveItem(item);
         hideInfoView();
         adapter.notifyItemInserted(items.size() - 1);
+        sortList();
     }
 
     public void showAddItemPopUp(View view) {
