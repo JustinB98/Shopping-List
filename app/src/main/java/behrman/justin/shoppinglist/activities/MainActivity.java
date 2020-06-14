@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private EditShoppingItemDialog dialog;
-    private List<ShoppingItem> items, displayedItems;
+    private List<ShoppingItem> displayedItems;
     private ShoppingListAdapter adapter;
     private ShoppingItemDataSource db;
     private TextView infoView;
@@ -76,21 +76,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showAllItems(MenuItem menuItem) {
-        for (ShoppingItem item : items) {
+        for (ShoppingItem item : displayedItems) {
             item.setHideDetails(false);
         }
         adapter.notifyDataSetChanged();
     }
 
     public void hideAllItems(MenuItem menuItem) {
-        for (ShoppingItem item : items) {
+        for (ShoppingItem item : displayedItems) {
             item.setHideDetails(true);
         }
         adapter.notifyDataSetChanged();
     }
 
     private void removeAllItems() {
-        items.clear();
         displayedItems.clear();
         db.open();
         db.clearShoppingItems();
@@ -119,16 +118,14 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         db = new ShoppingItemDataSource(this);
         db.open();
-        items = db.loadData();
-        if (items == null) {
+        displayedItems = db.loadData();
+        if (displayedItems == null) {
             Toast.makeText(this, R.string.loading_items_error, Toast.LENGTH_LONG).show();
-            items = new ArrayList<>();
+            displayedItems = new ArrayList<>();
         }
         db.close();
         dialog = new EditShoppingItemDialog(getSupportFragmentManager());
-        displayedItems = new ArrayList<>();
-        displayedItems.addAll(items);
-        if (items.isEmpty()) {
+        if (displayedItems.isEmpty()) {
             showInfoView();
         } else {
             hideInfoView();
@@ -196,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ShoppingItem removeItemFromDatabase(ShoppingItem item) {
         deleteItem(item);
-        if (items.isEmpty()) {
+        if (displayedItems.isEmpty()) {
             showInfoView();
         }
         return item;
@@ -209,11 +206,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItem(ShoppingItem item) {
-        items.add(item);
         displayedItems.add(item);
         saveItem(item);
         hideInfoView();
-        adapter.notifyItemInserted(items.size() - 1);
+        adapter.notifyItemInserted(displayedItems.size() - 1);
         sortList();
     }
 
